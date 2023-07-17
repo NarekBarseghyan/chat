@@ -27,20 +27,19 @@ const urlEncodedParser = express.urlencoded({extended: false})    // расши�
 // GET запрос на главную страницу
 app.get('/', function(req, res){
     res.sendFile(__dirname + '/index.html')
-    console.log(req);
-    fs.appendFile('readme.log', `${new Date().format("[Y-MM-DD H:m:SS]")} ${req.url} ${req.method} ${req.headersDistinct.host[0]}\n`, function(err, data){})
+    fs.appendFile('readme.log', `${new Date().format("[Y-MM-DD H:m:SS]")} ${req.url} ${req.method} ${req.rawHeaders[1]}\n`, function(err, data){})
 
 })
 // POST запрос с главную страницу
 app.post('/', urlEncodedParser, function(req, res){
     nicName = req.body.nic_name
     res.redirect(301, '/chat')
-    fs.appendFile('readme.log', `${new Date().format("[Y-MM-DD H:m:SS]")} ${req.url} ${req.method} ${req.headersDistinct.host[0]}\n`, function(err, data){})
+    fs.appendFile('readme.log', `${new Date().format("[Y-MM-DD H:m:SS]")} ${req.url} ${req.method} ${req.rawHeaders[1]}\n`, function(err, data){})
 })
 // GET запрос на страницу чата
 app.get('/chat', function(req, res){
     res.sendFile(__dirname + '/chat.html')
-    fs.appendFile('readme.log', `${new Date().format("[Y-MM-DD H:m:SS]")} ${req.url} ${req.method} ${req.headersDistinct.host[0]}\n`, function(err, data){})
+    fs.appendFile('readme.log', `${new Date().format("[Y-MM-DD H:m:SS]")} ${req.url} ${req.method} ${req.rawHeaders[1]}\n`, function(err, data){})
 })
 
 // ------------------------------------------------------------------------------
