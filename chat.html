@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+
+    <title>Document</title>
+</head>
+<body>
+<!-- ---------------------------------------------------------------------------------- -->
+    <div style="height: 100vh;" class="d-flex justify-content-center align-items-center flex-row">
+        <div class="me-5">
+            <form id="formMess" class="p-5">
+                <textarea name="message" id="message" cols="10" rows="1" class="form-control border shadow mb-3"></textarea>
+                <input type="submit" class="btn btn-primary border shadow mt-3">
+            </form>
+        </div>
+        <div>
+            <h1 class="ms-5">Chat</h1>
+            <div id="all_mess" class="m-5"></div>
+        </div>
+    </div>
+<!-- ---------------------------------------------------------------------------------- -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    
+    <script>
+        $(function(){
+            const socket = io()
+            var formMess = $('#formMess')
+            var mess = $('#message')
+            var all_mess = $('#all_mess')
+
+            formMess.submit(function(event){
+                event.preventDefault()
+                
+                socket.emit('mess_send', {message: mess.val()})
+
+                mess.val("")
+            })
+
+            socket.on('mess_up', function(data){
+
+                if(data.status == 'in' || data.status == 'out')
+                {
+                    all_mess.append(`<div><b>${data.author}</b> ${data.message}</div>`)
+                }
+                else
+                {
+                    all_mess.append(`<div class="border rounded-pill shadow p-2 my-3"><b>${data.author}</b>: ${data.message}</div>`)
+                }
+            })
+        })
+        
+        
+    </script>
+</body>
+</html>
