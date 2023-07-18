@@ -29,6 +29,18 @@
     <script>
         $(function(){
             const socket = io()
+
+            socket.on('init', function(name){
+                socket.name = name
+
+                if (socket.name == undefined)
+                {
+                    $(location).attr('href', 'http://localhost:3000' )
+                }
+            })
+
+            
+
             var formMess = $('#formMess')
             var mess = $('#message')
             var all_mess = $('#all_mess')

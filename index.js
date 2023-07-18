@@ -46,7 +46,7 @@ app.get('/chat', function(req, res){
 
 // работа с socket.io
 
-// подключение к 
+// подключение к socket.io
 io.sockets.on('connection', function (socket){
 
     // записать в лог-файл
@@ -65,6 +65,10 @@ io.sockets.on('connection', function (socket){
     // Установление имени пользователя
     socket.name = nicName
 
+    socket.emit('init', socket.name)
+
+    nicName = undefined
+
     readLogFun('WEBSOCKET')
 
     // отправить сообщение "${пользователь} вошел в чат" в чат
@@ -78,7 +82,11 @@ io.sockets.on('connection', function (socket){
         }, 60000)
 
         readLogFun('WEBSOCKET')
+
+        
     })
+
+    
 
     // событие "пользователь отправил сообщение"
     socket.on('mess_send', function(data) {
